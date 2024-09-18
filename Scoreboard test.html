@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Πίνακας Σκορ</title>
+    <style>
+        body {
+            font-family: 'Arial Black', Arial, sans-serif;
+            text-align: center;
+            margin-top: 20px;
+            background-color: #f0f8ff;
+        }
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('IMG-22397278e24dbfc065640020edda4fac-V.jpg');
+            background-size: cover;
+            background-position: center;
+            filter: blur(5px); /* Προσθέτει θόλωση στη φωτογραφία */
+            z-index: -1;
+        }
+        button {
+            font-size: 18px;
+            margin: 5px;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 10px; /* Στρογγυλεύει τις γωνίες των κουμπιών */
+            cursor: pointer;
+        }
+        .increase {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .decrease {
+            background-color: #f44336;
+            color: white;
+        }
+        .reset {
+            background-color: #008CBA;
+            color: white;
+        }
+        .score {
+            font-size: 40px;
+            margin: 10px;
+            color: #7FFF00; /* Λαχανί χρώμα */
+        }
+        .score-container {
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #7FFF00; /* Λαχανί χρώμα */
+            margin-bottom: 5px;
+        }
+        #clock {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #7FFF00; /* Λαχανί χρώμα */
+            font-family: 'Arial Black', Arial, sans-serif;
+        }
+        button.clock-button {
+            font-size: 18px;
+            margin: 5px;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 10px; /* Στρογγυλεύει τις γωνίες των κουμπιών */
+            cursor: pointer;
+        }
+        button.start {
+            background-color: #4CAF50;
+            color: white;
+        }
+        button.stop {
+            background-color: #f44336;
+            color: white;
+        }
+        button.reset {
+            background-color: #008CBA;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div id="clock">00:00:00</div>
+    <button class="clock-button start" onclick="startClock()">Start</button>
+    <button class="clock-button stop" onclick="stopClock()">Stop</button>
+    <button class="clock-button reset" onclick="resetClock()">Reset</button>
+
+    <div class="score-container">
+        <h2>ΓΙΩΡΓΟΣ</h2>
+        <div id="score1" class="score">0</div>
+        <button class="increase" onclick="increaseScore('score1')">Αύξηση</button>
+        <button class="decrease" onclick="decreaseScore('score1')">Μείωση</button>
+        <button class="reset" onclick="resetScore('score1')">Μηδενισμός</button>
+    </div>
+
+    <div class="score-container">
+        <h2>ΡΑΝΤΙΚ</h2>
+        <div id="score2" class="score">0</div>
+        <button class="increase" onclick="increaseScore('score2')">Αύξηση</button>
+        <button class="decrease" onclick="decreaseScore('score2')">Μείωση</button>
+        <button class="reset" onclick="resetScore('score2')">Μηδενισμός</button>
+    </div>
+
+    <div class="score-container">
+        <h2>ΤΙΜΟΣ</h2>
+        <div id="score3" class="score">0</div>
+        <button class="increase" onclick="increaseScore('score3')">Αύξηση</button>
+        <button class="decrease" onclick="decreaseScore('score3')">Μείωση</button>
+        <button class="reset" onclick="resetScore('score3')">Μηδενισμός</button>
+    </div>
+
+    <script>
+        let clockInterval;
+        let running = false;
+        let elapsedTime = 0;
+
+        function startClock() {
+            if (!running) {
+                running = true;
+                startTime = Date.now() - elapsedTime;
+                clockInterval = setInterval(updateClock, 1000); // Update every second
+            }
+        }
+
+        function stopClock() {
+            if (running) {
+                running = false;
+                clearInterval(clockInterval);
+            }
+        }
+
+        function resetClock() {
+            stopClock();
+            elapsedTime = 0;
+            document.getElementById("clock").innerText = "00:00:00";
+        }
+
+        function updateClock() {
+            elapsedTime = Date.now() - startTime;
+            let totalSeconds = Math.floor(elapsedTime / 1000);
+
+            let hours = Math.floor(totalSeconds / 3600);
+            let minutes = Math.floor((totalSeconds % 3600) / 60);
+            let seconds = totalSeconds % 60;
+
+            // Format the time as HH:MM:SS
+            document.getElementById("clock").innerText =
+                (hours < 10 ? "0" : "") + hours + ":" +
+                (minutes < 10 ? "0" : "") + minutes + ":" +
+                (seconds < 10 ? "0" : "") + seconds;
+        }
+    
+		 function increaseScore(id) {
+            let score = document.getElementById(id);
+            score.innerText = parseInt(score.innerText) + 1;
+        }
+
+        function decreaseScore(id) {
+            let score = document.getElementById(id);
+            if (parseInt(score.innerText) > 0) {
+                score.innerText = parseInt(score.innerText) - 1;
+            }
+        }
+
+        function resetScore(id) {
+            let score = document.getElementById(id);
+            score.innerText = 0;
+        }
+	</script>
+</body>
+</html>
